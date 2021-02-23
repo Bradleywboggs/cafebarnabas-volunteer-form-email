@@ -48,11 +48,11 @@ const createLastRowDataObject = (data, fields) => {
     }, {})
 }
 
-const prepareHtml = (data) => {
+const prepareHtml = (data, template) => {
   const volunteerData = Object.entries(data).reduce((accum, [key, val]) => {
     return `${accum}<strong>${key}:</strong> ${val} <br/>`
   }, "")
-  return `${EMAIL_CONTENT.replace('{{VOLUNTEER_DATA}}', volunteerData)}`
+  return `${template.replace('{{VOLUNTEER_DATA}}', volunteerData)}`
 }
 
 const onUpdate = () => {
@@ -61,7 +61,7 @@ const onUpdate = () => {
   // 2. aggregate just the needed fields as an object
   const processedData = createLastRowDataObject(dataFromLastRow, FIELDS)
   // 3. Create HTML payload with processedData
-  const emailBody = prepareHtml(processedData)
+  const emailBody = prepareHtml(processedData, EMAIL_CONTENT)
   // 4. Send emails
   MailApp.sendEmail(
     {
