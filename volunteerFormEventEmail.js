@@ -15,7 +15,9 @@ As it is written, “How beautiful are the feet of those who preach the good new
 </p>
 
 <h2>Volunteer</h2>
+<table>
 {{VOLUNTEER_DATA}}
+</table>
 <p>In Christ's Service,<br/> 
 The Cafe Barnabas Team</p>
 
@@ -50,7 +52,7 @@ const createLastRowDataObject = (data, fields) => {
 
 const prepareHtml = (data, template) => {
   const volunteerData = Object.entries(data).reduce((accum, [key, val]) => {
-    return `${accum}<strong>${key}:</strong> ${val} <br/>`
+    return `${accum}<tr><td><strong>${key}</strong></td><td>${val}</td></td>`
   }, "")
   return `${template.replace('{{VOLUNTEER_DATA}}', volunteerData)}`
 }
