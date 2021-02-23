@@ -1,7 +1,7 @@
 const SPREADSHEET_ID = ""
 const SPREADSHEET_NAME = ""
 const EMAIL_ADDRESSES = "bradleywboggs@gmail.com"
-const EMAIL_CONTENT = `
+const EMAIL_TEMPLATE = `
 <h1>Hey World Changer!!!</h1>
 <h2>We have a new volunteer application. Thanks for seizing this relational opportunity in the next 24-48 hours!</h2>
 <h3>CREATING OUTSTANDING EXPERIENCES</h3>
@@ -23,11 +23,18 @@ The Cafe Barnabas Team</p>
 
 
 <footer>
-Topeka:West Ridge Mall |   <a href=mailto:Madisen@CafeBarnabas.org>Madisen@CafeBarnabas.org</a> <br/>
+Topeka:West Ridge Mall | <a href=mailto:Madisen@CafeBarnabas.org>Madisen@CafeBarnabas.org</a> <br/>
 Topeka:17th St | <a href=mailto:ChristenB@CafeBarnabas.org>ChristenB@CafeBarnabas.org</a>  <br/>
 KCMO:Truman Ave | <a href=mailto:LookingF@CafeBarnabas.org>LookingF@CafeBarnabas.org</a>  <br/>
 </footer>
 `
+
+
+/* 
+    FIELDS consists of an object whose keys are the field names for the email,
+    whose values are the column numbers for the corresponding cells on the spread sheet
+ */
+
 const FIELDS = {
   "Name": 1,
   "School": 2, 
@@ -38,8 +45,7 @@ const FIELDS = {
 
 
 const fetchDataFromLastRow = () => {
-  const ss = SpreadsheetApp.openById(SPREADSHEET_ID)
-  const sheet = ss.getSheetByName(SPREADSHEET_NAME)
+  const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SPREADSHEET_NAME)
   return sheet.getDataRange().getValues()[sheet.getLastRow() - 1]
 }
 
@@ -52,7 +58,13 @@ const createLastRowDataObject = (data, fields) => {
 
 const prepareHtml = (data, template) => {
   const volunteerData = Object.entries(data).reduce((accum, [key, val]) => {
-    return `${accum}<tr><td><strong>${key}</strong></td><td>${val}</td></td>`
+    return `
+    ${accum}
+	    <tr>
+      	      <td><strong>${key}</strong></td>
+       	      <td>${val}</td>
+      </tr>
+      `
   }, "")
   return `${template.replace('{{VOLUNTEER_DATA}}', volunteerData)}`
 }
@@ -60,10 +72,10 @@ const prepareHtml = (data, template) => {
 const onUpdate = () => {
   // 1. grab the data from the last row
   const dataFromLastRow = fetchDataFromLastRow()
-  // 2. aggregate just the needed fields as an object
+  // 2. aggregate only the needed fields as an object
   const processedData = createLastRowDataObject(dataFromLastRow, FIELDS)
   // 3. Create HTML payload with processedData
-  const emailBody = prepareHtml(processedData, EMAIL_CONTENT)
+  const emailBody = prepareHtml(processedData, EMAIL_TEMPLATE)
   // 4. Send emails
   MailApp.sendEmail(
     {
