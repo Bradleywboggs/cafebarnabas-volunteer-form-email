@@ -1,5 +1,5 @@
-const SPREADSHEET_ID = "1uqX8EWUGpB4EtKjsfX-MuAFHPW_KYGq_QQZjWjR-4_M"
-const SPREADSHEET_NAME = "App"
+const SPREADSHEET_ID = ""
+const SPREADSHEET_NAME = ""
 const EMAIL_ADDRESSES = "bradleywboggs@gmail.com"
 const EMAIL_CONTENT = `
 <h1>Hey World Changer!!!</h1>
@@ -58,11 +58,10 @@ const prepareHtml = (data) => {
 const onUpdate = () => {
   // 1. grab the data from the last row
   const dataFromLastRow = fetchDataFromLastRow()
-  // 2. aggregate just the needed fields in some way   as an object?
+  // 2. aggregate just the needed fields as an object
   const processedData = createLastRowDataObject(dataFromLastRow, FIELDS)
-  // 3. Convert to email friendly text
+  // 3. Create HTML payload with processedData
   const emailBody = prepareHtml(processedData)
-
   // 4. Send emails
   MailApp.sendEmail(
     {
