@@ -2,6 +2,20 @@ const SPREADSHEET_ID = ""
 const SPREADSHEET_NAME = ""
 const EMAIL_ADDRESSES = "bradleywboggs@gmail.com"
 const EMAIL_TEMPLATE = `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    td { 
+    padding-left: 10px;
+    padding-right: 10px;
+ }
+  </style>
+</head>  
 <h1>Hey World Changer!!!</h1>
 <h2>We have a new volunteer application. Thanks for seizing this relational opportunity in the next 24-48 hours!</h2>
 <h3>CREATING OUTSTANDING EXPERIENCES</h3>
@@ -14,7 +28,7 @@ As it is written, “How beautiful are the feet of those who preach the good new
 </em>
 </p>
 
-<h2>Volunteer</h2>
+<h2>Volunteer Info</h2>
 <table>
 {{VOLUNTEER_DATA}}
 </table>
@@ -27,6 +41,7 @@ Topeka:West Ridge Mall | <a href=mailto:Madisen@CafeBarnabas.org>Madisen@CafeBar
 Topeka:17th St | <a href=mailto:ChristenB@CafeBarnabas.org>ChristenB@CafeBarnabas.org</a>  <br/>
 KCMO:Truman Ave | <a href=mailto:LookingF@CafeBarnabas.org>LookingF@CafeBarnabas.org</a>  <br/>
 </footer>
+</html>
 `
 
 
@@ -34,13 +49,11 @@ KCMO:Truman Ave | <a href=mailto:LookingF@CafeBarnabas.org>LookingF@CafeBarnabas
     FIELDS consists of an object whose keys are the field names for the email,
     whose values are the column numbers for the corresponding cells on the spread sheet
  */
-
 const FIELDS = {
   "Name": 1,
   "School": 2, 
   "Phone": 3,
-  "Email": 4,
-  "Why They Want To Volunteer": 5,
+  "Why They Want To Volunteer": 4,
 }
 
 
@@ -84,4 +97,4 @@ const onUpdate = () => {
       "subject": "New Volunteer Application!"
       }
     )
-}
+} 
